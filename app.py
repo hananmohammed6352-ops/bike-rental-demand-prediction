@@ -16,62 +16,113 @@ st.set_page_config(
 )
 
 # ---------------------------------------------------
-# CUSTOM CSS
+# CUSTOM CSS - DARK MAROON THEME
 # ---------------------------------------------------
 
 st.markdown("""
 <style>
 
+/* Main background */
+
 .stApp {
-    background: linear-gradient(
-        135deg,
-        #e6f7ff 0%,
-        #eafaf4 50%,
-        #f0edff 100%
-    );
+    background:
+        radial-gradient(
+            circle at top left,
+            #54243a 0%,
+            #321622 40%,
+            #1e1017 100%
+        );
+    color: #f8eee8;
 }
+
+/* Main container */
 
 .block-container {
     max-width: 1200px;
     padding-top: 2rem;
+    padding-bottom: 2rem;
 }
 
-/* Title */
+/* ---------------------------------------------------
+   TITLE
+--------------------------------------------------- */
 
 .main-title {
     text-align: center;
-    font-size: 48px;
+    font-size: 52px;
     font-weight: 800;
-    color: #176b87;
-    margin-bottom: 5px;
+    color: #ffe9d6;
+    margin-bottom: 4px;
+    letter-spacing: 1px;
 }
 
 .subtitle {
     text-align: center;
-    font-size: 18px;
-    color: #527784;
-    margin-bottom: 30px;
+    font-size: 19px;
+    color: #e9b9aa;
+    margin-bottom: 35px;
 }
 
-/* Section */
+/* ---------------------------------------------------
+   SECTION CARDS
+--------------------------------------------------- */
 
 .section-box {
-    background: rgba(255, 255, 255, 0.55);
-    padding: 25px;
-    border-radius: 20px;
-    border: 1px solid rgba(100, 180, 190, 0.25);
-    box-shadow: 0 8px 25px rgba(50, 120, 140, 0.10);
+    background: rgba(76, 31, 49, 0.88);
+    padding: 26px;
+    border-radius: 22px;
+    border: 1px solid rgba(231, 174, 151, 0.22);
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.28);
     margin-bottom: 25px;
 }
 
 .section-heading {
     font-size: 24px;
     font-weight: 700;
-    color: #176b87;
-    margin-bottom: 18px;
+    color: #ffd9c4;
+    margin-bottom: 20px;
 }
 
-/* Button */
+/* ---------------------------------------------------
+   LABELS
+--------------------------------------------------- */
+
+label {
+    color: #f6ddd3 !important;
+    font-weight: 600 !important;
+}
+
+/* ---------------------------------------------------
+   SELECT BOXES
+--------------------------------------------------- */
+
+div[data-baseweb="select"] > div {
+    background-color: #321923;
+    border: 1px solid #714052;
+    border-radius: 10px;
+    color: #fff2ea;
+}
+
+/* Select text */
+
+div[data-baseweb="select"] span {
+    color: #fff2ea !important;
+}
+
+/* ---------------------------------------------------
+   NUMBER INPUTS
+--------------------------------------------------- */
+
+div[data-testid="stNumberInput"] input {
+    background-color: #321923;
+    color: #fff2ea;
+    border: 1px solid #714052;
+    border-radius: 10px;
+}
+
+/* ---------------------------------------------------
+   BUTTON
+--------------------------------------------------- */
 
 .stButton {
     display: flex;
@@ -81,89 +132,128 @@ st.markdown("""
 .stButton > button {
     background: linear-gradient(
         90deg,
-        #2fa8c7,
-        #38b993
+        #a94f68,
+        #c56a72
     );
-    color: white;
+
+    color: #fff7f2;
+
     font-size: 18px;
     font-weight: 700;
-    padding: 12px 35px;
+
+    padding: 13px 38px;
+
     border-radius: 30px;
-    border: none;
+
+    border: 1px solid #d88b87;
+
+    box-shadow:
+        0 8px 25px rgba(180, 70, 100, 0.30);
+
+    transition: 0.3s;
 }
 
 .stButton > button:hover {
     background: linear-gradient(
         90deg,
-        #248eaa,
-        #2d9e7e
+        #c56a72,
+        #d98580
     );
+
     color: white;
+
+    transform: translateY(-2px);
 }
 
-/* Result */
+/* ---------------------------------------------------
+   RESULT BOX
+--------------------------------------------------- */
 
 .result-box {
-    background: linear-gradient(
-        135deg,
-        #d9f7f0,
-        #dff3ff
-    );
-    padding: 30px;
+    background:
+        linear-gradient(
+            135deg,
+            #55243a,
+            #3b1b2b
+        );
+
+    padding: 32px;
+
     border-radius: 25px;
+
     text-align: center;
-    border: 1px solid #a5ddd5;
+
+    border: 1px solid #9a5968;
+
+    box-shadow:
+        0 12px 35px rgba(0, 0, 0, 0.35);
+
     margin-top: 25px;
-    box-shadow: 0 10px 30px rgba(50, 140, 150, 0.15);
 }
 
 .result-heading {
-    font-size: 21px;
+    font-size: 22px;
     font-weight: 600;
-    color: #3b6873;
+    color: #f5cbb9;
 }
 
 .result-number {
-    font-size: 55px;
+    font-size: 58px;
     font-weight: 800;
-    color: #147c83;
+    color: #ffe3cf;
     margin: 5px 0;
 }
 
 .result-description {
     font-size: 17px;
-    color: #527784;
+    color: #ddb2a5;
 }
 
-/* Summary */
+/* ---------------------------------------------------
+   SUMMARY CARDS
+--------------------------------------------------- */
 
 .summary-box {
-    background: rgba(255, 255, 255, 0.55);
-    padding: 18px;
+    background: rgba(76, 31, 49, 0.85);
+
+    padding: 19px;
+
     border-radius: 18px;
+
     text-align: center;
-    border: 1px solid rgba(100, 180, 190, 0.25);
+
+    border: 1px solid rgba(218, 139, 130, 0.22);
+
+    box-shadow:
+        0 8px 20px rgba(0, 0, 0, 0.20);
 }
 
 .summary-title {
     font-size: 14px;
-    color: #66828b;
+    color: #d7aaa0;
 }
 
 .summary-value {
     font-size: 18px;
     font-weight: 700;
-    color: #246b78;
+    color: #ffe1cf;
     margin-top: 5px;
 }
 
-/* Footer */
+/* ---------------------------------------------------
+   FOOTER
+--------------------------------------------------- */
 
 .footer {
     text-align: center;
-    color: #6c8992;
+
+    color: #b9918c;
+
     font-size: 14px;
-    margin-top: 35px;
+
+    margin-top: 40px;
+
+    padding-bottom: 10px;
 }
 
 </style>
@@ -268,7 +358,7 @@ st.markdown(
 
 
 # ---------------------------------------------------
-# TIME SECTION
+# TIME & CALENDAR
 # ---------------------------------------------------
 
 st.markdown(
@@ -364,7 +454,7 @@ st.markdown(
 
 
 # ---------------------------------------------------
-# PREDICT BUTTON
+# PREDICTION BUTTON
 # ---------------------------------------------------
 
 st.markdown("<br>", unsafe_allow_html=True)
@@ -486,15 +576,13 @@ if st.button("🚲 Predict Bike Rental Demand"):
             drop_first=True
         )
 
-        # Match training columns
-
         input_encoded = input_encoded.reindex(
             columns=feature_columns,
             fill_value=0
         )
 
         # ---------------------------------------------------
-        # SCALE
+        # SCALE NUMERICAL FEATURES
         # ---------------------------------------------------
 
         input_encoded[numerical_features] = scaler.transform(
@@ -519,7 +607,9 @@ if st.button("🚲 Predict Bike Rental Demand"):
     )
 
     st.markdown(
-        '<div class="result-heading">🚲 BikeCast Prediction</div>',
+        '<div class="result-heading">'
+        '🚲 BikeCast Prediction'
+        '</div>',
         unsafe_allow_html=True
     )
 
@@ -541,7 +631,7 @@ if st.button("🚲 Predict Bike Rental Demand"):
     )
 
     # ---------------------------------------------------
-    # SUMMARY CARDS
+    # SUMMARY
     # ---------------------------------------------------
 
     st.markdown("<br>", unsafe_allow_html=True)
