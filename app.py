@@ -5,248 +5,228 @@ import pickle
 from datetime import datetime
 import time
 
-
-# ==========================================
-# PAGE CONFIGURATION
-# ==========================================
+# ---------------------------------------------------
+# PAGE SETTINGS
+# ---------------------------------------------------
 
 st.set_page_config(
-    page_title="Bike Rental Prediction",
+    page_title="BikeCast",
     page_icon="🚲",
     layout="wide"
 )
 
-
-# ==========================================
-# CUSTOM LIGHT THEME
-# ==========================================
+# ---------------------------------------------------
+# CUSTOM CSS
+# ---------------------------------------------------
 
 st.markdown("""
 <style>
 
-/* Main page */
 .stApp {
     background: linear-gradient(
         135deg,
-        #f4fbff 0%,
-        #f7fcf9 50%,
-        #eef8ff 100%
+        #e8f7ff 0%,
+        #eefcf7 45%,
+        #f3f0ff 100%
     );
 }
 
-/* Main container */
 .block-container {
-    padding-top: 2rem;
-    padding-bottom: 3rem;
     max-width: 1200px;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
 }
 
+/* Main Title */
 
-/* Main title */
 .main-title {
     text-align: center;
-    font-size: 44px;
+    font-size: 48px;
     font-weight: 800;
-    color: #164e63;
+    color: #176b87;
     margin-bottom: 5px;
 }
 
-
-/* Subtitle */
 .subtitle {
     text-align: center;
     font-size: 18px;
-    color: #52717d;
-    margin-bottom: 35px;
+    color: #527784;
+    margin-bottom: 30px;
 }
 
+/* Section Cards */
 
-/* Section cards */
 .section-card {
-    background: rgba(255, 255, 255, 0.92);
-    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.65);
     padding: 25px;
-    border: 1px solid #dceff5;
-    box-shadow: 0 8px 25px rgba(60, 130, 150, 0.08);
+    border-radius: 20px;
+    border: 1px solid rgba(120, 190, 200, 0.35);
+    box-shadow: 0 8px 25px rgba(60, 120, 140, 0.10);
     margin-bottom: 20px;
 }
 
-
-/* Section headings */
 .section-title {
-    color: #155e75;
     font-size: 23px;
     font-weight: 700;
-    margin-bottom: 20px;
+    color: #176b87;
+    margin-bottom: 15px;
 }
 
+/* Labels */
 
-/* Input labels */
 label {
-    color: #365a63 !important;
     font-weight: 600 !important;
+    color: #315b68 !important;
 }
 
+/* Input boxes */
 
-/* Prediction button */
+div[data-baseweb="select"] > div {
+    background-color: rgba(255,255,255,0.75);
+    border-radius: 10px;
+}
+
+div[data-testid="stNumberInput"] input {
+    background-color: rgba(255,255,255,0.75);
+    border-radius: 10px;
+}
+
+/* Button */
+
+.stButton {
+    display: flex;
+    justify-content: center;
+}
+
 .stButton > button {
     background: linear-gradient(
         90deg,
-        #38bdf8,
-        #2dd4bf
+        #35a9c7,
+        #3bbf9a
     );
     color: white;
-    border: none;
-    border-radius: 14px;
-    padding: 14px 25px;
     font-size: 18px;
     font-weight: 700;
+    padding: 12px 35px;
+    border-radius: 30px;
+    border: none;
+    box-shadow: 0 6px 18px rgba(50, 160, 160, 0.25);
     transition: 0.3s;
-    box-shadow: 0 6px 15px rgba(45, 212, 191, 0.25);
 }
 
-
-/* Button hover */
 .stButton > button:hover {
     transform: translateY(-2px);
-    box-shadow: 0 10px 22px rgba(45, 212, 191, 0.35);
+    box-shadow: 0 10px 25px rgba(50, 160, 160, 0.35);
 }
 
+/* Result */
 
-/* Result card */
 .result-card {
     background: linear-gradient(
         135deg,
-        #ecfeff,
-        #ecfdf5
+        #dff8f4,
+        #e1f4ff
     );
-    border: 2px solid #99f6e4;
-    border-radius: 24px;
-    padding: 35px;
+    padding: 30px;
+    border-radius: 25px;
     text-align: center;
-    margin-top: 30px;
-    box-shadow: 0 12px 30px rgba(20, 184, 166, 0.12);
+    border: 1px solid #a8ded7;
+    box-shadow: 0 10px 30px rgba(50, 140, 150, 0.15);
+    margin-top: 25px;
 }
 
-
-/* Result title */
 .result-title {
-    color: #115e59;
-    font-size: 24px;
-    font-weight: 700;
+    font-size: 20px;
+    font-weight: 600;
+    color: #3b6873;
 }
 
-
-/* Result number */
 .result-number {
-    color: #0f766e;
-    font-size: 55px;
+    font-size: 52px;
     font-weight: 800;
-    margin: 10px 0;
+    color: #167c83;
+    margin: 5px 0;
 }
 
-
-/* Result description */
 .result-text {
-    color: #52717d;
     font-size: 17px;
+    color: #527784;
 }
 
+/* Information cards */
 
-/* Small info cards */
 .info-card {
-    background: white;
-    border-radius: 16px;
+    background: rgba(255,255,255,0.55);
     padding: 18px;
+    border-radius: 18px;
     text-align: center;
-    border: 1px solid #dceff5;
-    box-shadow: 0 5px 15px rgba(60, 130, 150, 0.06);
+    border: 1px solid rgba(120,190,200,0.25);
 }
 
+.info-title {
+    font-size: 14px;
+    color: #66828b;
+}
+
+.info-value {
+    font-size: 20px;
+    font-weight: 700;
+    color: #246b78;
+}
 
 /* Footer */
+
 .footer {
     text-align: center;
-    color: #72909a;
-    margin-top: 40px;
+    color: #6c8992;
     font-size: 14px;
-}
-
-
-/* Divider */
-hr {
-    border: none;
-    border-top: 1px solid #d8edf2;
-    margin: 30px 0;
+    margin-top: 35px;
+    padding-bottom: 10px;
 }
 
 </style>
 """, unsafe_allow_html=True)
 
 
-# ==========================================
-# TITLE
-# ==========================================
-
-st.markdown(
-    '<div class="main-title">🚲 Bike Rental Demand Prediction</div>',
-    unsafe_allow_html=True
-)
-
-st.markdown(
-    '<div class="subtitle">'
-    'AI-powered prediction of expected bike rental demand'
-    '</div>',
-    unsafe_allow_html=True
-)
-
-
-# ==========================================
-# LOAD MODEL
-# ==========================================
+# ---------------------------------------------------
+# LOAD MODEL, SCALER AND FEATURES
+# ---------------------------------------------------
 
 with gzip.open("model.pkl.gz", "rb") as f:
     model = pickle.load(f)
 
-
-# ==========================================
-# LOAD SCALER
-# ==========================================
-
 with open("scaler.pkl", "rb") as f:
     scaler = pickle.load(f)
-
-
-# ==========================================
-# LOAD FEATURE COLUMNS
-# ==========================================
 
 with open("feature_columns.pkl", "rb") as f:
     feature_columns = pickle.load(f)
 
 
-# ==========================================
-# TWO COLUMN LAYOUT
-# ==========================================
+# ---------------------------------------------------
+# TITLE
+# ---------------------------------------------------
 
-left_column, right_column = st.columns(2, gap="large")
+st.markdown("""
+<div class="main-title">🚲 BikeCast</div>
+
+<div class="subtitle">
+    Bike + Forecast | Smart Rental Demand Prediction
+</div>
+""", unsafe_allow_html=True)
 
 
-# ==========================================
-# WEATHER SECTION
-# ==========================================
+# ---------------------------------------------------
+# INPUT SECTION
+# ---------------------------------------------------
 
-with left_column:
+st.markdown("""
+<div class="section-card">
+<div class="section-title">🌤️ Weather & Conditions</div>
+""", unsafe_allow_html=True)
 
-    st.markdown(
-        '<div class="section-card">',
-        unsafe_allow_html=True
-    )
+col1, col2 = st.columns(2)
 
-    st.markdown(
-        '<div class="section-title">🌦️ Weather Conditions</div>',
-        unsafe_allow_html=True
-    )
+with col1:
 
     season = st.selectbox(
         "Season",
@@ -271,6 +251,9 @@ with left_column:
         step=0.01
     )
 
+
+with col2:
+
     hum = st.number_input(
         "Humidity (normalized)",
         min_value=0.08,
@@ -287,30 +270,21 @@ with left_column:
         step=0.01
     )
 
-    st.markdown(
-        '</div>',
-        unsafe_allow_html=True
-    )
+st.markdown("</div>", unsafe_allow_html=True)
 
 
-# ==========================================
-# TIME SECTION
-# ==========================================
+# ---------------------------------------------------
+# TIME & CALENDAR SECTION
+# ---------------------------------------------------
 
-with right_column:
+st.markdown("""
+<div class="section-card">
+<div class="section-title">🕒 Time & Calendar</div>
+""", unsafe_allow_html=True)
 
-    st.markdown(
-        '<div class="section-card">',
-        unsafe_allow_html=True
-    )
+col1, col2 = st.columns(2)
 
-    st.markdown(
-        '<div class="section-title">🕒 Time & Calendar</div>',
-        unsafe_allow_html=True
-    )
-
-
-    # Time options
+with col1:
 
     hour_options = {
         "12:00 AM": 0,
@@ -339,7 +313,6 @@ with right_column:
         "11:00 PM": 23
     }
 
-
     selected_time = st.selectbox(
         "Time of Day",
         list(hour_options.keys())
@@ -348,7 +321,7 @@ with right_column:
     hour = hour_options[selected_time]
 
 
-    # Weekday
+with col2:
 
     weekday_options = {
         "Sunday": 0,
@@ -360,7 +333,6 @@ with right_column:
         "Saturday": 6
     }
 
-
     selected_weekday = st.selectbox(
         "Day of the Week",
         list(weekday_options.keys())
@@ -369,7 +341,9 @@ with right_column:
     weekday = weekday_options[selected_weekday]
 
 
-    # Holiday
+col1, col2 = st.columns(2)
+
+with col1:
 
     holiday = st.selectbox(
         "Is it a Holiday?",
@@ -377,424 +351,278 @@ with right_column:
     )
 
 
-    # Working day
+with col2:
 
     working_day = st.selectbox(
         "Is it a Working Day?",
         ["No", "Yes"]
     )
 
-
-    st.markdown(
-        '</div>',
-        unsafe_allow_html=True
-    )
+st.markdown("</div>", unsafe_allow_html=True)
 
 
-# ==========================================
+# ---------------------------------------------------
 # PREDICTION BUTTON
-# ==========================================
+# ---------------------------------------------------
 
 st.markdown("<br>", unsafe_allow_html=True)
 
-button_left, button_center, button_right = st.columns(
-    [1, 2, 1]
-)
-
-with button_center:
-
-    predict_button = st.button(
-        "🚲  Predict Bike Rental Demand",
-        use_container_width=True
-    )
+predict_button = st.button("🚲 Predict Bike Rental Demand")
 
 
-# ==========================================
+# ---------------------------------------------------
 # PREDICTION
-# ==========================================
+# ---------------------------------------------------
 
 if predict_button:
 
-    # Loading animation
-
-    with st.spinner(
-        "🔍 Analyzing weather, time and calendar conditions..."
-    ):
+    with st.spinner("🔮 BikeCast is analyzing the conditions..."):
 
         time.sleep(1)
 
-
-        # ----------------------------------
-        # Fixed year
-        # ----------------------------------
-
+        # Automatically use current year/month
         yr = 1
-
-
-        # ----------------------------------
-        # Current month
-        # ----------------------------------
-
         mnth = datetime.now().month
 
+        # Convert Yes/No to 0/1
 
-        # ----------------------------------
-        # Holiday conversion
-        # ----------------------------------
+        holiday_value = 0 if holiday == "No" else 1
 
-        if holiday == "No":
-            holiday_value = 0
-        else:
-            holiday_value = 1
+        workingday_value = 0 if working_day == "No" else 1
 
-
-        # ----------------------------------
-        # Working day conversion
-        # ----------------------------------
-
-        if working_day == "No":
-            workingday_value = 0
-        else:
-            workingday_value = 1
-
-
-        # ----------------------------------
-        # Create input
-        # ----------------------------------
+        # ---------------------------------------------------
+        # CREATE INPUT DATA
+        # ---------------------------------------------------
 
         input_data = pd.DataFrame({
-
             "season": [season],
-
             "yr": [yr],
-
             "mnth": [mnth],
-
             "hr": [hour],
-
             "holiday": [holiday_value],
-
             "weekday": [weekday],
-
             "workingday": [workingday_value],
-
             "weathersit": [weather],
-
             "temp": [temp],
-
             "hum": [hum],
-
             "windspeed": [windspeed]
-
         })
 
-
-        # ----------------------------------
-        # Feature lists
-        # ----------------------------------
+        # ---------------------------------------------------
+        # CATEGORICAL FEATURES
+        # ---------------------------------------------------
 
         categorical_features = [
-
             "season",
-
             "yr",
-
             "mnth",
-
             "hr",
-
             "holiday",
-
             "weekday",
-
             "workingday",
-
             "weathersit"
-
         ]
-
 
         numerical_features = [
-
             "temp",
-
             "hum",
-
             "windspeed"
-
         ]
 
-
-        # ----------------------------------
-        # Set categories
-        # ----------------------------------
+        # ---------------------------------------------------
+        # SET CATEGORY RANGES
+        # ---------------------------------------------------
 
         input_data["season"] = pd.Categorical(
-
             input_data["season"],
-
             categories=[
                 "Fall",
                 "Spring",
                 "Summer",
                 "Winter"
             ]
-
         )
-
 
         input_data["yr"] = pd.Categorical(
-
             input_data["yr"],
-
             categories=[0, 1]
-
         )
-
 
         input_data["mnth"] = pd.Categorical(
-
             input_data["mnth"],
-
             categories=list(range(1, 13))
-
         )
-
 
         input_data["hr"] = pd.Categorical(
-
             input_data["hr"],
-
             categories=list(range(24))
-
         )
-
 
         input_data["holiday"] = pd.Categorical(
-
             input_data["holiday"],
-
             categories=[0, 1]
-
         )
-
 
         input_data["weekday"] = pd.Categorical(
-
             input_data["weekday"],
-
             categories=list(range(7))
-
         )
-
 
         input_data["workingday"] = pd.Categorical(
-
             input_data["workingday"],
-
             categories=[0, 1]
-
         )
-
 
         input_data["weathersit"] = pd.Categorical(
-
             input_data["weathersit"],
-
             categories=[
-
                 "Clear",
-
                 "Heavy Rain/Snow",
-
                 "Light Rain/Snow",
-
                 "Mist"
-
             ]
-
         )
 
-
-        # ----------------------------------
-        # One-hot encoding
-        # ----------------------------------
+        # ---------------------------------------------------
+        # ONE-HOT ENCODING
+        # ---------------------------------------------------
 
         input_encoded = pd.get_dummies(
-
             input_data,
-
             columns=categorical_features,
-
             drop_first=True
-
         )
 
-
-        # ----------------------------------
-        # Match training columns
-        # ----------------------------------
+        # Make sure the input has exactly the same
+        # 52 features as the training data
 
         input_encoded = input_encoded.reindex(
-
             columns=feature_columns,
-
             fill_value=0
-
         )
 
-
-        # ----------------------------------
-        # Scale numerical values
-        # ----------------------------------
+        # ---------------------------------------------------
+        # SCALE NUMERICAL FEATURES
+        # ---------------------------------------------------
 
         input_encoded[numerical_features] = scaler.transform(
-
             input_encoded[numerical_features]
-
         )
 
+        # ---------------------------------------------------
+        # MAKE PREDICTION
+        # ---------------------------------------------------
 
-        # ----------------------------------
-        # Prediction
-        # ----------------------------------
-
-        prediction = model.predict(
-
-            input_encoded
-
-        )[0]
-
+        prediction = model.predict(input_encoded)[0]
 
         prediction = round(prediction)
 
+        # ---------------------------------------------------
+        # RESULT
+        # ---------------------------------------------------
 
-    # ======================================
-    # RESULT
-    # ======================================
+        st.balloons()
 
-    st.balloons()
+        st.markdown(f"""
+        <div class="result-card">
 
-
-    st.markdown(
-
-        '<div class="result-card">',
-
-        unsafe_allow_html=True
-
-    )
-
-
-    st.markdown(
-
-        '<div class="result-title">'
-        '🎯 Predicted Bike Rental Demand'
-        '</div>',
-
-        unsafe_allow_html=True
-
-    )
-
-
-    st.markdown(
-
-        f'<div class="result-number">'
-        f'{prediction} 🚲'
-        f'</div>',
-
-        unsafe_allow_html=True
-
-    )
-
-
-    st.markdown(
-
-        '<div class="result-text">'
-        'bikes are expected to be rented under these conditions.'
-        '</div>',
-
-        unsafe_allow_html=True
-
-    )
-
-
-    st.markdown(
-
-        '</div>',
-
-        unsafe_allow_html=True
-
-    )
-
-
-    # ======================================
-    # SUMMARY
-    # ======================================
-
-    st.markdown(
-        "<br>",
-        unsafe_allow_html=True
-    )
-
-    st.markdown(
-        "### 📊 Prediction Summary"
-    )
-
-
-    summary1, summary2, summary3 = st.columns(3)
-
-
-    with summary1:
-
-        st.markdown(
-            f"""
-            <div class="info-card">
-                <b>🌤️ Season</b>
-                <br><br>
-                {season}
+            <div class="result-title">
+                🚲 BikeCast Prediction
             </div>
-            """,
-            unsafe_allow_html=True
-        )
 
-
-    with summary2:
-
-        st.markdown(
-            f"""
-            <div class="info-card">
-                <b>🕒 Time</b>
-                <br><br>
-                {selected_time}
+            <div class="result-number">
+                {prediction}
             </div>
-            """,
-            unsafe_allow_html=True
-        )
 
-
-    with summary3:
-
-        st.markdown(
-            f"""
-            <div class="info-card">
-                <b>☁️ Weather</b>
-                <br><br>
-                {weather}
+            <div class="result-text">
+                Estimated bike rentals for the selected conditions
             </div>
-            """,
-            unsafe_allow_html=True
-        )
+
+        </div>
+        """, unsafe_allow_html=True)
+
+        # ---------------------------------------------------
+        # SUMMARY CARDS
+        # ---------------------------------------------------
+
+        st.markdown("<br>", unsafe_allow_html=True)
+
+        col1, col2, col3, col4 = st.columns(4)
+
+        with col1:
+
+            st.markdown(f"""
+            <div class="info-card">
+
+                <div class="info-title">
+                    🌤️ Season
+                </div>
+
+                <div class="info-value">
+                    {season}
+                </div>
+
+            </div>
+            """, unsafe_allow_html=True)
+
+        with col2:
+
+            st.markdown(f"""
+            <div class="info-card">
+
+                <div class="info-title">
+                    🕒 Time
+                </div>
+
+                <div class="info-value">
+                    {selected_time}
+                </div>
+
+            </div>
+            """, unsafe_allow_html=True)
+
+        with col3:
+
+            st.markdown(f"""
+            <div class="info-card">
+
+                <div class="info-title">
+                    ☁️ Weather
+                </div>
+
+                <div class="info-value">
+                    {weather}
+                </div>
+
+            </div>
+            """, unsafe_allow_html=True)
+
+        with col4:
+
+            st.markdown(f"""
+            <div class="info-card">
+
+                <div class="info-title">
+                    📅 Day
+                </div>
+
+                <div class="info-value">
+                    {selected_weekday}
+                </div>
+
+            </div>
+            """, unsafe_allow_html=True)
 
 
-# ==========================================
+# ---------------------------------------------------
 # FOOTER
-# ==========================================
+# ---------------------------------------------------
 
-st.markdown(
-    """
-    <div class="footer">
-        Built with Python • Streamlit • Random Forest Machine Learning
-    </div>
-    """,
-    unsafe_allow_html=True
-)
+st.markdown("""
+<div class="footer">
+
+🚲 <b>BikeCast</b> — Bike + Forecast<br>
+Powered by Machine Learning & Random Forest Regression
+
+</div>
+""", unsafe_allow_html=True)
