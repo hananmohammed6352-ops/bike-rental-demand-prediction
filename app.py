@@ -197,7 +197,7 @@ div[data-testid="stNumberInput"] input {
 # LOAD MODEL AND SCALER 
 # --------------------------------------------------- 
  
-model = joblib.load("model.pkl") 
+model = joblib.load("model.pkl.gz") 
  
 scaler = joblib.load("scaler.pkl") 
  
